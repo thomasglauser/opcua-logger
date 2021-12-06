@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 const { InfluxDB } = require('@influxdata/influxdb-client');
-const { PingAPI } = require('@influxdata/influxdb-client-apis');
+const { OrgsAPI } = require('@influxdata/influxdb-client-apis');
 
 const INFLUX_URL = process.env.INFLUX_URL;
 const INFLUX_TOKEN = process.env.INFLUX_TOKEN;
@@ -15,16 +15,19 @@ const INFLUX = new InfluxDB({
     token: INFLUX_TOKEN,
 }).getWriteApi(INFLUX_ORG, INFLUX_BUCKET, 'ns');
 
-const INFLUX_API = new PingAPI(INFLUX);
+const INFLUX_ORGS_API = new OrgsAPI(INFLUX);
 
 async function start() {
-    INFLUX_API.getPing()
-        .then(() => {
-            LOG.info('Successfully connected to InfluxDB');
-        })
-        .catch((error) => {
-            LOG.error('Error connecting to InfluxDB: ' + error.message);
+    try {
+        await INFLUX_ORGS_API.getOrgs({
+            org: INFLUX_ORG,
         });
+
+        LOG.info('Successfully connected to InfluxDB');
+    } catch (error) {
+        LOG.error('InfluxDB connection error: ' + error.message);
+        throw error;
+    }
 }
 
 async function write(points) {
