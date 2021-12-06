@@ -3,10 +3,10 @@ require('dotenv').config();
 import { InfluxDB } from '@influxdata/influxdb-client';
 import { PingAPI } from '../packages/apis';
 
-INFLUX_URL = process.env.INFLUX_URL;
-INFLUX_TOKEN = proccess.env.INFLUX_TOKEN;
-INFLUX_ORG = process.env.INFLUX_ORG;
-INFLUX_BUCKET = process.env.INFLUX_BUCKET;
+const INFLUX_URL = process.env.INFLUX_URL;
+const INFLUX_TOKEN = proccess.env.INFLUX_TOKEN;
+const INFLUX_ORG = process.env.INFLUX_ORG;
+const INFLUX_BUCKET = process.env.INFLUX_BUCKET;
 
 const LOG = require('log4js').getLogger('influx');
 const INFLUX = new InfluxDB({ INFLUX_URL, INFLUX_TOKEN }).getWriteApi(
