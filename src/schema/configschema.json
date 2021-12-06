@@ -4,7 +4,7 @@
     "$id": "http://factry.io/opcua-logger-config-schema.json",
     "type": "object",
     "title": "The Configuration Schema for OPCUA data logger",
-    "required": ["opcua", "influx", "metrics"],
+    "required": ["opcua", "metrics"],
     "properties": {
         "opcua": {
             "$id": "#/properties/opcua",

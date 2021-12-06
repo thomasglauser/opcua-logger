@@ -1,29 +1,29 @@
 require('dotenv').config();
 
-import { InfluxDB } from '@influxdata/influxdb-client';
-import { PingAPI } from '../packages/apis';
+const { InfluxDB } = require('@influxdata/influxdb-client');
+const { PingAPI } = require('@influxdata/influxdb-client-apis');
 
 const INFLUX_URL = process.env.INFLUX_URL;
-const INFLUX_TOKEN = proccess.env.INFLUX_TOKEN;
+const INFLUX_TOKEN = process.env.INFLUX_TOKEN;
 const INFLUX_ORG = process.env.INFLUX_ORG;
 const INFLUX_BUCKET = process.env.INFLUX_BUCKET;
 
 const LOG = require('log4js').getLogger('influx');
-const INFLUX = new InfluxDB({ INFLUX_URL, INFLUX_TOKEN }).getWriteApi(
-    INFLUX_ORG,
-    INFLUX_BUCKET,
-    'ns'
-);
-const PING = new PingAPI(INFLUX);
+
+const INFLUX = new InfluxDB({
+    url: INFLUX_URL,
+    token: INFLUX_TOKEN,
+}).getWriteApi(INFLUX_ORG, INFLUX_BUCKET, 'ns');
+
+const INFLUX_API = new PingAPI(INFLUX);
 
 async function start() {
-    PING.getPing()
+    INFLUX_API.getPing()
         .then(() => {
-            LOG.info('InfluxDB connected');
+            LOG.info('Successfully connected to InfluxDB');
         })
         .catch((error) => {
-            LOG.warn(error);
-            LOG.warn('InfluxDB is not responding');
+            LOG.error('Error connecting to InfluxDB: ' + error.message);
         });
 }
 
@@ -53,4 +53,5 @@ async function write(points) {
         throw e;
     }
 }
-export default { start, write };
+
+module.exports = { start, write };
