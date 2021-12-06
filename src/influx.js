@@ -1,19 +1,29 @@
-const { InfluxDB } = require('@influxdata/influxdb-client');
-const { PingAPI } = require('../packages/apis');
-const { url, token, org, bucket } = require('./env');
-const log = require('log4js').getLogger('influx');
+require('dotenv').config();
 
-const INFLUX = new InfluxDB({ url, token }).getWriteApi(org, bucket, 'ns');
+import { InfluxDB } from '@influxdata/influxdb-client';
+import { PingAPI } from '../packages/apis';
+
+INFLUX_URL = process.env.INFLUX_URL;
+INFLUX_TOKEN = proccess.env.INFLUX_TOKEN;
+INFLUX_ORG = process.env.INFLUX_ORG;
+INFLUX_BUCKET = process.env.INFLUX_BUCKET;
+
+const LOG = require('log4js').getLogger('influx');
+const INFLUX = new InfluxDB({ INFLUX_URL, INFLUX_TOKEN }).getWriteApi(
+    INFLUX_ORG,
+    INFLUX_BUCKET,
+    'ns'
+);
 const PING = new PingAPI(INFLUX);
 
 async function start() {
     PING.getPing()
         .then(() => {
-            log.info('InfluxDB connected');
+            LOG.info('InfluxDB connected');
         })
         .catch((error) => {
-            log.warn(error);
-            log.warn('InfluxDB is not responding');
+            LOG.warn(error);
+            LOG.warn('InfluxDB is not responding');
         });
 }
 
@@ -36,11 +46,11 @@ async function write(points) {
         INFLUX.writePoints(pts);
     } catch (e) {
         if (e.message.includes('partial write')) {
-            log.warn(e.message);
+            LOG.warn(e.message);
             return;
         }
-        log.error(e.message);
+        LOG.error(e.message);
         throw e;
     }
 }
-module.exports = { start, write };
+export default { start, write };

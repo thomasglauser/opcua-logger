@@ -43,7 +43,7 @@ process.on('SIGINT', async () => {
         //
 
         log.info('Initialising influxClient');
-        await influx.start(conf.influx.url);
+        await influx.start();
 
         //
         // Create and start the buffer.
