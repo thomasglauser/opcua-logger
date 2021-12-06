@@ -12,7 +12,7 @@
         "clock-tickr": "^0.1.0",
         "fs-extra": "^8.1.0",
         "influx": "5.4.0",
-        "log4js": "^4.5.1",
+        "log4js": "^6.3.0",
         "node-opcua": "2.1.9"
     }
 }
