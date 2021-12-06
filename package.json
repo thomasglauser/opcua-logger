@@ -8,7 +8,7 @@
         "start": "node ./src/index.js"
     },
     "dependencies": {
-        "ajv": "^6.10.2",
+        "ajv": "^8.8.2",
         "clock-tickr": "^0.1.0",
         "fs-extra": "^8.1.0",
         "influx": "5.4.0",
