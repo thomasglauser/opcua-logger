@@ -13,6 +13,6 @@
         "fs-extra": "^10.0.0",
         "influx": "5.4.0",
         "log4js": "^6.3.0",
-        "node-opcua": "2.1.9"
+        "node-opcua": "2.62.4"
     }
 }
