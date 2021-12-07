@@ -2,10 +2,10 @@ FROM node:16-alpine
 
 WORKDIR /usr/src/opcua-logger
 
-COPY ./opcua-logger/package*.json ./
+COPY package*.json ./
 
 RUN npm install
 
-COPY ./opcua-logger .
+COPY . .
 
 CMD [ "node", "./src/index.js" ]
