@@ -10,7 +10,6 @@
   <h3 align="center">
     Log OPC UA data to InfluxDB v2 with Docker
     <br />
-    <a href="#usage"><strong>Get started</strong></a>
     <br />
     <br />
   </h3>
