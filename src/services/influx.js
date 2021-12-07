@@ -32,7 +32,9 @@ async function start() {
 
 async function write(points) {
     let pts = points.map((p) => {
-        const point = new Point(p.measurement).tag('tag', p.tag).timestamp('');
+        const point = new Point(p.measurement)
+            .tag('tag', p.tag)
+            .timestamp(p.timestamp);
 
         if (p.datatype === 'string') {
             return point.stringField('value', p.value);

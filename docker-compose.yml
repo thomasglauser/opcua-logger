@@ -17,8 +17,10 @@ services:
             - INFLUX_TOKEN=${INFLUX_TOKEN}
             - INFLUX_ORG=${INFLUX_ORG}
             - INFLUX_BUCKET=${INFLUX_BUCKET}
+            - TZ=${TIMEZONE}
+            - NODE_ENV=production
         volumes:
-            - ./config_1.json:/usr/src/opcua-logger/config.json
+            - ./config.json:/usr/src/opcua-logger/config.json
         restart: unless-stopped
 
 volumes:
