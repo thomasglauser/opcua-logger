@@ -3,7 +3,7 @@ version: '3.9'
 services:
     influxdb:
         container_name: influxdb
-        image: influxdb:2.1.1
+        image: influxdb:latest
         volumes:
             - influxdb:/var/lib/influxdb2
         ports:
@@ -11,7 +11,7 @@ services:
         restart: unless-stopped
     opcua-logger_1:
         container_name: opcua-logger_1
-        build: .
+        image: thomasglauser00/opcua-logger:latest
         environment:
             - INFLUX_URL=${INFLUX_URL}
             - INFLUX_TOKEN=${INFLUX_TOKEN}
