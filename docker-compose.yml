@@ -1,0 +1,25 @@
+version: '3.9'
+
+services:
+    influxdb:
+        container_name: influxdb
+        image: influxdb:2.1.1
+        volumes:
+            - influxdb:/var/lib/influxdb2
+        ports:
+            - '8082:8086'
+        restart: unless-stopped
+    opcua-logger_1:
+        container_name: opcua-logger_1
+        build: .
+        environment:
+            - INFLUX_URL=${INFLUX_URL}
+            - INFLUX_TOKEN=${INFLUX_TOKEN}
+            - INFLUX_ORG=${INFLUX_ORG}
+            - INFLUX_BUCKET=${INFLUX_BUCKET}
+        volumes:
+            - ./config_1.json:/usr/src/opcua-logger/config.json
+        restart: unless-stopped
+
+volumes:
+    influxdb:
