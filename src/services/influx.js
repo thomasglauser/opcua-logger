@@ -13,7 +13,7 @@ const log = require('log4js').getLogger('influx');
 const influxDB = new InfluxDB({
     url: INFLUX_URL,
     token: INFLUX_TOKEN,
-}).getWriteApi(INFLUX_ORG, INFLUX_BUCKET, 'ns');
+}).getWriteApi(INFLUX_ORG, INFLUX_BUCKET, 's');
 
 const influxDB_API = new OrgsAPI(influxDB);
 
@@ -32,18 +32,24 @@ async function start() {
 
 async function write(points) {
     let pts = points.map((p) => {
-        if (p.datatype === 'string') {
-            const point = new Point(p.measurement)
-                .tag('tag', p.tag)
-                .stringField('value', p.value)
-                .timestamp(p.timestamp);
+        const point = new Point(p.measurement).tag('tag', p.tag).timestamp('');
 
-            return point;
+        if (p.datatype === 'string') {
+            return point.stringField('value', p.value);
+        }
+
+        if (p.datatype === 'number') {
+            return point.floatField('value', p.value);
+        }
+
+        if (p.datatype === 'boolean') {
+            return point.booleanField('value', p.value);
         }
     });
 
     try {
         influxDB.writePoints(pts);
+        log.info('Successfully sent data to InfluxDB');
     } catch (error) {
         log.error('InfluxDB write error: ' + error.message);
         throw error;
