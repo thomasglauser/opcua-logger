@@ -11,7 +11,7 @@ let load = () => {
     text = JSON.parse(file);
 
     // validate the resulting JSON against the config schema
-    let schema = require('./schema/configschema.json');
+    let schema = require('../schema/configschema.json');
     let ajv = new AJV();
 
     if (!ajv.validate(schema, text)) {

@@ -2,10 +2,9 @@ let opcua = require('node-opcua');
 let Point = require('./point.js');
 let EventEmitter = require('events');
 let ClockTickr = require('clock-tickr');
-let path = require('path');
 
 const log4js = require('log4js');
-const log = log4js.getLogger('opcuaclient');
+const log = log4js.getLogger('opcua');
 
 //
 // OpcuaConnection implements all logic for polling and monitoring a set of
@@ -24,7 +23,7 @@ const UACLIENT = opcua.OPCUAClient.create({
         maxDelay: 10000,
     },
     keepSessionAlive: true,
-    endpoint_must_exist: false,
+    endpointMustExist: false,
 });
 
 let UACONNECTIONACTIVE = false;
@@ -168,22 +167,6 @@ async function _disconnectUA() {
 }
 
 //
-// :: _validateMetric tries a single read for a single metric and returns the
-//    OPCUA statuscode.
-//
-// async function _validateMetric (metric) {
-//   if (!UACONNECTIONACTIVE || !UASESSION) {
-//     throw new Error('There is no active session. Can\'t read')
-//   }
-
-//   metric.nodeId = metric.Settings.NodeID // opcua lib expects nodeId on the object
-//   let datavalues = await UASESSION.read([metric], 0)
-//   let status = datavalues[0].statusCode.name
-
-//   return status
-// }
-
-//
 // :: _executePoll is called by the scheduler with all metrics that should be
 //    polled at a certain timestamp.
 //
@@ -254,7 +237,7 @@ function _addPolledMetric(metric) {
     }
     log.info('Added Polled Metric.', {
         measurement: metric.measurement,
-        tags: metric.tags,
+        tag: metric.tag,
         nodeId: metric.nodeId,
     });
 }
@@ -299,7 +282,7 @@ function _addMonitoredMetric(metric) {
     metric.uaMonitoredItem = uaMonitoredItem;
     log.info('Added Monitored Metric.', {
         measurement: metric.measurement,
-        tags: metric.tags,
+        tag: metric.tag,
         nodeId: metric.nodeId,
     });
 }

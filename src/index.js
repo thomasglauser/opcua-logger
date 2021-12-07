@@ -1,8 +1,8 @@
-const log = require('./logging.js').getLogger('main');
-const config = require('./config.js');
-const influx = require('./influx.js');
-const buffer = require('./buffer.js');
-const opcua = require('./opcua.js');
+const config = require('./config/config.js');
+const influx = require('./services/influx.js');
+const buffer = require('./services/buffer.js');
+const opcua = require('./services/opcua.js');
+const log = require('./services/logging.js').getLogger('main');
 
 let conf = config.load();
 
@@ -29,40 +29,22 @@ process.on('SIGINT', async () => {
     await gracefullShutdown('received SIGINT');
 });
 
-// MAIN LOGIC IN IIFE
 (async () => {
     try {
         log.info(
-            `Starting Influx OPCUA Logger v${
-                require('../package.json').version
-            }, brought to you by FACTRY (www.factry.io)`
+            `Starting OPCUA-Logger v${require('../package.json').version}`
         );
-
-        //
-        // Init influxclient
-        //
 
         log.info('Initialising influxClient');
         await influx.start();
 
-        //
-        // Create and start the buffer.
-        //
-
         log.info('Initialising buffer');
         await buffer.start(influx.write);
-
-        //
-        // Create and start the OPCUA connection.
-        //
 
         log.info('Connecting OPCUA');
         await opcua.start(conf.opcua);
         opcua.EVENTS.on('points', (pts) => buffer.addPoints(pts));
 
-        //
-        // Add all metrics to the OPCUA Session
-        //
         for (let m of conf.metrics) {
             opcua.addMetric(m);
         }
