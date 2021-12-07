@@ -11,7 +11,6 @@
     Log OPC UA data to InfluxDB v2 with Docker
     <br />
     <br />
-    <br />
   </h3>
 </div>
 
