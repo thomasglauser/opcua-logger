@@ -13,7 +13,7 @@ const log = require('log4js').getLogger('influx');
 const influxDB = new InfluxDB({
     url: INFLUX_URL,
     token: INFLUX_TOKEN,
-}).getWriteApi(INFLUX_ORG, INFLUX_BUCKET, 's');
+}).getWriteApi(INFLUX_ORG, INFLUX_BUCKET, 'ms');
 
 const influxDB_API = new OrgsAPI(influxDB);
 
@@ -34,7 +34,7 @@ async function write(points) {
     let pts = points.map((p) => {
         const point = new Point(p.measurement)
             .tag('tag', p.tag)
-            .timestamp(p.timestamp);
+            .timestamp(Date.now());
 
         if (p.datatype === 'string') {
             return point.stringField('value', p.value);
