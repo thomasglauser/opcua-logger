@@ -54,10 +54,10 @@
     ```
 
 5. Log in to the InfluxDB web interface and complete the initial setup. You need to create a new authentication token and add it to the .env file as "INFLUX_TOKEN".
-6. Restart the services. opcua-logger can now authenticate with the token.
+6. Re-create the services with the updated token. opcua-logger can now authenticate with the newly generated token.
 
     ```sh
-     docker-compose restart
+     docker-compose up -d
     ```
 
 ## Credits
