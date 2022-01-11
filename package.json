@@ -13,7 +13,7 @@
         "@influxdata/influxdb-client-apis": "^1.21.0",
         "ajv": "^8.8.2",
         "clock-tickr": "^0.1.0",
-        "dotenv": "^10.0.0",
+        "dotenv": "^11.0.0",
         "fs-extra": "^10.0.0",
         "log4js": "^6.3.0",
         "node-opcua": "2.62.7"
