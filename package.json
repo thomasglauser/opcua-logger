@@ -16,7 +16,7 @@
         "dotenv": "^16.0.0",
         "fs-extra": "^10.0.1",
         "log4js": "^6.4.1",
-        "node-opcua": "2.64.1"
+        "node-opcua": "2.66.1"
     },
     "devDependencies": {
         "nodemon": "^2.0.15"
